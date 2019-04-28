@@ -5,12 +5,17 @@ import QtMultimedia 5.12
 Window {
     id: root
     visible: true
-    width: 180
+    width: 170
     height: 50
     title: qsTr("Timer")
+    color: systemPalette.window
     property int max: 90
     property string start: "Start"
 
+    SystemPalette {
+        id: systemPalette;
+        colorGroup: SystemPalette.Active
+    }
     Text {
         id: text
         text: root.start
@@ -18,7 +23,8 @@ Window {
         verticalAlignment: Text.AlignVCenter
         font.pointSize: 24
         font.family: "ubuntu mono"
-        width: 150; height: 50;
+        width: root.width; height: root.height;
+        color: systemPalette.text
 
         MouseArea {
             id: playArea
