@@ -3,32 +3,54 @@ import QtQuick.Window 2.12
 import QtMultimedia 5.12
 
 Window {
+    id: root
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Make Sound")
+    width: 180
+    height: 50
+    title: qsTr("Timer")
+    property int max: 90
+    property string start: "Start"
 
     Text {
-        text: "Play sound!";
-        font.pointSize: 24;
+        id: text
+        text: root.start
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        font.pointSize: 24
+        font.family: "ubuntu mono"
         width: 150; height: 50;
 
-        SoundEffect {
-            id: playSound
-            source: "times_up.wav"
-        }
-        Timer {
-            id: timer
-            interval: 5000
-            onTriggered: {
-                playSound.play()
-            }
-        }
         MouseArea {
             id: playArea
             anchors.fill: parent
             onPressed: {
-                timer.start();
+                if (!timer.running) {
+                    timer.count = root.max
+                    text.text = timer.count
+                    timer.start()
+                }
+            }
+        }
+        Timer {
+            id: timer
+            interval: 1000
+            property int count: root.max
+            onTriggered: {
+                --count;
+                if (count > 0) {
+                    text.text = count
+                    start()
+                } else {
+                    playSound.play()
+                    text.text = "Done"
+                }
+            }
+        }
+        SoundEffect {
+            id: playSound
+            source: "times_up.wav"
+            onPlayingChanged: {
+                text.text = root.start
             }
         }
     }
