@@ -17,10 +17,19 @@ Window {
             id: playSound
             source: "times_up.wav"
         }
+        Timer {
+            id: timer
+            interval: 5000
+            onTriggered: {
+                playSound.play()
+            }
+        }
         MouseArea {
             id: playArea
             anchors.fill: parent
-            onPressed: { playSound.play() }
+            onPressed: {
+                timer.start();
+            }
         }
     }
 }
