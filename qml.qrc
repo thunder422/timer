@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>timer.qml</file>
         <file>times_up.wav</file>
+        <file>timer.ico</file>
     </qresource>
 </RCC>
