@@ -32,7 +32,7 @@ Window {
             onPressed: {
                 if (!timer.running) {
                     timer.count = root.max
-                    text.text = timer.count
+                    text.setTime(timer.count)
                     timer.start()
                 }
             }
@@ -44,7 +44,7 @@ Window {
             onTriggered: {
                 --count;
                 if (count > 0) {
-                    text.text = count
+                    text.setTime(count)
                     start()
                 } else {
                     playSound.play()
@@ -58,6 +58,16 @@ Window {
             onPlayingChanged: {
                 text.text = root.start
             }
+        }
+
+        function setTime(seconds) {
+            var minutes = Math.floor(seconds / 60)
+            seconds = seconds - minutes * 60
+            text.text = pad2(minutes) + ":" + pad2(seconds)
+        }
+
+        function pad2(number) {
+            return ("0" + number).slice(-2)
         }
     }
 }
