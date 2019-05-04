@@ -10,8 +10,8 @@ Window {
     height: 50
     title: qsTr("Timer")
     color: systemPalette.window
-    property int start_time: 90
-    property string start_text: "Start"
+    property int startTime: 90
+    property string startText: "Start"
 
     SystemPalette {
         id: systemPalette;
@@ -19,7 +19,7 @@ Window {
     }
     Text {
         id: text
-        text: root.start_text
+        text: root.startText
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.pointSize: 24
@@ -36,7 +36,7 @@ Window {
                     if (mouse.button === Qt.RightButton) {
                         contextMenu.popup();
                     } else {
-                        timer.count = root.start_time
+                        timer.count = root.startTime
                         text.setTime(timer.count)
                         timer.start()
                     }
@@ -46,7 +46,7 @@ Window {
         Timer {
             id: timer
             interval: 1000
-            property int count: root.start_time
+            property int count: root.startTime
             onTriggered: {
                 --count;
                 if (count > 0) {
@@ -62,7 +62,7 @@ Window {
             id: playSound
             source: "times_up.wav"
             onPlayingChanged: {
-                text.text = root.start_text
+                text.text = root.startText
             }
         }
 
@@ -82,13 +82,13 @@ Window {
         MenuItem {
             text: "00:60"
             onTriggered: {
-                root.start_time = 60
+                root.startTime = 60
             }
         }
         MenuItem {
             text: "01:30"
             onTriggered: {
-                root.start_time = 90
+                root.startTime = 90
             }
         }
     }
