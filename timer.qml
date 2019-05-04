@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls 1.4
 import QtMultimedia 5.12
 
 Window {
@@ -9,8 +10,8 @@ Window {
     height: 50
     title: qsTr("Timer")
     color: systemPalette.window
-    property int max: 90
-    property string start: "Start"
+    property int start_time: 90
+    property string start_text: "Start"
 
     SystemPalette {
         id: systemPalette;
@@ -18,7 +19,7 @@ Window {
     }
     Text {
         id: text
-        text: root.start
+        text: root.start_text
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.pointSize: 24
@@ -29,18 +30,23 @@ Window {
         MouseArea {
             id: playArea
             anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
             onPressed: {
                 if (!timer.running) {
-                    timer.count = root.max
-                    text.setTime(timer.count)
-                    timer.start()
+                    if (mouse.button === Qt.RightButton) {
+                        contextMenu.popup();
+                    } else {
+                        timer.count = root.start_time
+                        text.setTime(timer.count)
+                        timer.start()
+                    }
                 }
             }
         }
         Timer {
             id: timer
             interval: 1000
-            property int count: root.max
+            property int count: root.start_time
             onTriggered: {
                 --count;
                 if (count > 0) {
@@ -56,7 +62,7 @@ Window {
             id: playSound
             source: "times_up.wav"
             onPlayingChanged: {
-                text.text = root.start
+                text.text = root.start_text
             }
         }
 
@@ -68,6 +74,22 @@ Window {
 
         function pad2(number) {
             return ("0" + number).slice(-2)
+        }
+    }
+    Menu {
+        id: contextMenu
+
+        MenuItem {
+            text: "00:60"
+            onTriggered: {
+                root.start_time = 60
+            }
+        }
+        MenuItem {
+            text: "01:30"
+            onTriggered: {
+                root.start_time = 90
+            }
         }
     }
 }
